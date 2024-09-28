@@ -7,7 +7,7 @@ View(MENTAL)
 library(ggplot2)  # For visualization (optional)
 
 # Read the dataset from a CSV file
-mental_health_data <- read.csv("MentalIllness-MATH350.csv")
+mental_health_data <- read.csv("mental-illnesses-prevalence-cleaned.csv")
 
 # Defining what country to filter for
 Country <- 'USA'
