@@ -3,7 +3,6 @@
 ## Todo
 
 ### Possible Graphs
-- Line/Scatterplot over time
 - Histogram
 - Boxplot
 

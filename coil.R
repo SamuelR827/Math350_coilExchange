@@ -32,3 +32,20 @@ ggplot(mental_health_data, aes(x = Bipolar, y = Schizo)) +
        x = "Bipolar Disorder Prevalence",
        y = "Schizophrenia Prevalence")
 
+# Scatter Plot
+plot(filtered_data$Year, filtered_data$Schizo, type = "b",
+     ylim = c(0.3, 0.7), xlab = "Year", ylab = "Share of Population",
+     col = "blue", pch = 16,
+     main = "Schizophrenia vs Bipolar Disorder Share Over Years")
+lines(filtered_data$Year, filtered_data$Bipolar, type = "b", col = "red", pch = 17)
+
+legend("topright", legend = c("Schizophrenia Share", "Bipolar Share"),
+       col = c("blue", "red"), pch = c(16,17), bty = "n")
+
+correlation <- cor.test(filtered_data$Schizo, filtered_data$Bipolar)
+mtext(paste("Correlation:", round(correlation$estimate, 2), "\n", 
+            "p-value:", signif(correlation$p.value, digits = 3)), 
+      side = 1, line = 3, col = "darkgreen", adj = 0)
+
+
+
