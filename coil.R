@@ -1,51 +1,75 @@
+# Load necessary libraries
 library(readr)
+library(ggplot2)
+
+# Load the original dataset
 MENTAL <- read_csv("MentalIllness-MATH350.csv")
-View(MENTAL)
+# View(MENTAL)
 
-# Supremely clever ChatGPT code /s
-# Load necessary library
-library(ggplot2)  # For visualization (optional)
-
-# Read the dataset from a CSV file
+# Read the cleaned dataset for further analysis
 mental_health_data <- read.csv("mental-illnesses-prevalence-cleaned.csv")
 
-# Defining what country to filter for
-Country <- 'USA'
+# Define the countries of interest
+countries_of_interest <- c("USA", "Australia", "Cameroon", "Cambodia")
 
-# Filtering the dataset for country
-filtered_data <- subset(mental_health_data, Code == Country)
+# Filter dataset for those countries
+filtered_data_multi <- subset(mental_health_data, Code %in% countries_of_interest)
 
-# Check the structure of the data (optional)
-str(mental_health_data)
+# Loop through each country to perform correlation and regression analysis
+for (country in countries_of_interest) {
+  # Filter data for the current country
+  country_data <- subset(filtered_data_multi, Code == country)
+  
+  # Perform Pearson correlation test
+  correlation_test <- cor.test(country_data$Schizo, country_data$Bipolar, method = "pearson")
+  
+  # Perform linear regression analysis
+  regression_model_country <- lm(Schizo ~ Bipolar, data = country_data)
+  
+  # Print results for each country
+  cat("\nResults for", country, ":\n")
+  print(correlation_test)
+  print(summary(regression_model_country))
+  
+  # Create scatter plot with regression line for each country
+  ggplot(country_data, aes(x = Bipolar, y = Schizo)) +
+    geom_point() +
+    geom_smooth(method = "lm", col = "blue") +
+    labs(title = paste("Schizophrenia vs Bipolar in", country),
+         x = "Bipolar Disorder Prevalence",
+         y = "Schizophrenia Prevalence") +
+    theme_minimal()
+}
 
-# Perform a linear regression analysis
-regression_model <- lm(Schizo ~ Bipolar, data = mental_health_data)
-
-# View the summary of the regression model
-summary(regression_model)
-
-# Optional: Visualize the regression
-ggplot(mental_health_data, aes(x = Bipolar, y = Schizo)) +
+# Time series analysis of Schizophrenia and Bipolar Disorder share over years for all countries
+ggplot(filtered_data_multi, aes(x = Year, y = Schizo, group = Code, color = Code)) +
+  geom_line() +
   geom_point() +
-  geom_smooth(method = "lm", col = "blue") +
-  labs(title = "Regression Analysis: Schizophrenia vs. Bipolar Disorder",
-       x = "Bipolar Disorder Prevalence",
-       y = "Schizophrenia Prevalence")
+  labs(title = "Schizophrenia Share Over Time in Selected Countries",
+       x = "Year",
+       y = "Schizophrenia Share of Population") +
+  theme_minimal()
 
-# Scatter Plot
-plot(filtered_data$Year, filtered_data$Schizo, type = "b",
-     ylim = c(0.3, 0.7), xlab = "Year", ylab = "Share of Population",
-     col = "blue", pch = 16,
-     main = "Schizophrenia vs Bipolar Disorder Share Over Years")
-lines(filtered_data$Year, filtered_data$Bipolar, type = "b", col = "red", pch = 17)
+ggplot(filtered_data_multi, aes(x = Year, y = Bipolar, group = Code, color = Code)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Bipolar Disorder Share Over Time in Selected Countries",
+       x = "Year",
+       y = "Bipolar Disorder Share of Population") +
+  theme_minimal()
 
-legend("topright", legend = c("Schizophrenia Share", "Bipolar Share"),
-       col = c("blue", "red"), pch = c(16,17), bty = "n")
+# Box plots for Schizophrenia and Bipolar Disorder prevalence across countries
+par(mfrow = c(1, 2))
+boxplot(filtered_data_multi$Schizo ~ filtered_data_multi$Code, main = "Schizophrenia Prevalence",
+        ylab = "Prevalence", xlab = "Country")
+boxplot(filtered_data_multi$Bipolar ~ filtered_data_multi$Code, main = "Bipolar Disorder Prevalence",
+        ylab = "Prevalence", xlab = "Country")
+par(mfrow = c(1, 1))
 
-correlation <- cor.test(filtered_data$Schizo, filtered_data$Bipolar)
-mtext(paste("Correlation:", round(correlation$estimate, 2), "\n", 
-            "p-value:", signif(correlation$p.value, digits = 3)), 
-      side = 1, line = 3, col = "darkgreen", adj = 0)
-
-
-
+# Histograms for each disorder across countries
+par(mfrow = c(1, 2))
+hist(filtered_data_multi$Schizo, main = "Distribution of Schizophrenia Prevalence",
+     xlab = "Percentage", ylab = "Frequency", col = "lightblue")
+hist(filtered_data_multi$Bipolar, main = "Distribution of Bipolar Disorder Prevalence",
+     xlab = "Percentage", ylab = "Frequency", col = "lightcoral")
+par(mfrow = c(1, 1))
