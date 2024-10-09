@@ -82,7 +82,7 @@ for (country in countries_of_interest) {
 ggplot(filtered_data_multi, aes(x = Year, y = Schizo, group = Code, color = Code)) +
   geom_line() +
   geom_point() +
-  labs(title = "Schizophrenia Share Over Time in Selected Countries",
+  labs(title = "Schizophrenia Share Over Time",
        x = "Year",
        y = "Schizophrenia Share of Population") +
   theme_minimal()
@@ -90,24 +90,24 @@ ggplot(filtered_data_multi, aes(x = Year, y = Schizo, group = Code, color = Code
 ggplot(filtered_data_multi, aes(x = Year, y = Bipolar, group = Code, color = Code)) +
   geom_line() +
   geom_point() +
-  labs(title = "Bipolar Disorder Share Over Time in Selected Countries",
+  labs(title = "Bipolar Disorder Share Over Time",
        x = "Year",
        y = "Bipolar Disorder Share of Population") +
   theme_minimal()
 
 # Box plots for Schizophrenia and Bipolar Disorder prevalence across countries
 par(mfrow = c(1, 2))
-boxplot(filtered_data_multi$Schizo ~ filtered_data_multi$Code, main = "Schizophrenia Prevalence",
+boxplot(filtered_data_multi$Schizo ~ filtered_data_multi$Code, main = "Schizophrenia Prevalence (USA)",
         ylab = "Prevalence", xlab = "Country")
-boxplot(filtered_data_multi$Bipolar ~ filtered_data_multi$Code, main = "Bipolar Disorder Prevalence",
+boxplot(filtered_data_multi$Bipolar ~ filtered_data_multi$Code, main = "Bipolar Disorder Prevalence (USA)",
         ylab = "Prevalence", xlab = "Country")
 par(mfrow = c(1, 1))
 
 # Histograms for each disorder across countries
 par(mfrow = c(1, 2))
-hist(filtered_data_multi$Schizo, main = "Distribution of Schizophrenia Prevalence",
+hist(filtered_data_multi$Schizo, main = "Distribution of Schizophrenia Prevalence (USA)",
      xlab = "Percentage", ylab = "Frequency", col = "lightblue")
-hist(filtered_data_multi$Bipolar, main = "Distribution of Bipolar Disorder Prevalence",
+hist(filtered_data_multi$Bipolar, main = "Distribution of Bipolar Disorder Prevalence (USA)",
      xlab = "Percentage", ylab = "Frequency", col = "lightcoral")
 par(mfrow = c(1, 1))
 
