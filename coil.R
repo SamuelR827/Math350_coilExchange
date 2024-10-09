@@ -13,7 +13,7 @@ mental_health_data <- read.csv("mental-illnesses-prevalence-cleaned.csv")
 countries_of_interest <- c("USA", "Australia", "Cameroon", "Cambodia")
 
 # Filter dataset for those countries
-filtered_data_multi <- subset(mental_health_data, Code %in% countries_of_interest)
+filtered_data <- subset(mental_health_data, Code %in% countries_of_interest)
 
 # Perform a linear regression analysis for the USA
 Country <- 'USA'
@@ -55,7 +55,7 @@ mtext(paste("Correlation:", round(correlation$estimate, 2), "\n",
 # Loop through each country to perform correlation and regression analysis
 for (country in countries_of_interest) {
   # Filter data for the current country
-  country_data <- subset(filtered_data_multi, Code == country)
+  country_data <- subset(filtered_data, Code == country)
   
   # Perform Pearson correlation test
   correlation_test <- cor.test(country_data$Schizo, country_data$Bipolar, method = "pearson")
@@ -79,7 +79,7 @@ for (country in countries_of_interest) {
 }
 
 # Time series analysis of Schizophrenia and Bipolar Disorder share over years for all countries
-ggplot(filtered_data_multi, aes(x = Year, y = Schizo, group = Code, color = Code)) +
+ggplot(filtered_data, aes(x = Year, y = Schizo, group = Code, color = Code)) +
   geom_line() +
   geom_point() +
   labs(title = "Schizophrenia Share Over Time",
@@ -87,7 +87,7 @@ ggplot(filtered_data_multi, aes(x = Year, y = Schizo, group = Code, color = Code
        y = "Schizophrenia Share of Population") +
   theme_minimal()
 
-ggplot(filtered_data_multi, aes(x = Year, y = Bipolar, group = Code, color = Code)) +
+ggplot(filtered_data, aes(x = Year, y = Bipolar, group = Code, color = Code)) +
   geom_line() +
   geom_point() +
   labs(title = "Bipolar Disorder Share Over Time",
@@ -97,17 +97,25 @@ ggplot(filtered_data_multi, aes(x = Year, y = Bipolar, group = Code, color = Cod
 
 # Box plots for Schizophrenia and Bipolar Disorder prevalence across countries
 par(mfrow = c(1, 2))
-boxplot(filtered_data_multi$Schizo ~ filtered_data_multi$Code, main = "Schizophrenia Prevalence (USA)",
+boxplot(filtered_data$Schizo ~ filtered_data$Code, main = "Schizophrenia Prevalence (USA)",
         ylab = "Prevalence", xlab = "Country")
-boxplot(filtered_data_multi$Bipolar ~ filtered_data_multi$Code, main = "Bipolar Disorder Prevalence (USA)",
+boxplot(filtered_data$Bipolar ~ filtered_data$Code, main = "Bipolar Disorder Prevalence (USA)",
         ylab = "Prevalence", xlab = "Country")
 par(mfrow = c(1, 1))
 
 # Histograms for each disorder across countries
 par(mfrow = c(1, 2))
-hist(filtered_data_multi$Schizo, main = "Distribution of Schizophrenia Prevalence (USA)",
+hist(filtered_data$Schizo, main = "Distribution of Schizophrenia Prevalence (USA)",
      xlab = "Percentage", ylab = "Frequency", col = "lightblue")
-hist(filtered_data_multi$Bipolar, main = "Distribution of Bipolar Disorder Prevalence (USA)",
+hist(filtered_data$Bipolar, main = "Distribution of Bipolar Disorder Prevalence (USA)",
      xlab = "Percentage", ylab = "Frequency", col = "lightcoral")
 par(mfrow = c(1, 1))
+
+# QQ Norm Plots
+qqnorm(filtered_data$Schizo, pch = 1, frame = FALSE)
+qqline(filtered_data$Schizo, col = "steelblue", lwd = 2)
+
+qqnorm(filtered_data$Bipolar, pch = 1, frame = FALSE)
+qqline(filtered_data$Bipolar, col = "steelblue", lwd = 2)
+
 
