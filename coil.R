@@ -12,6 +12,8 @@ filtered_data <- subset(mental_health_data, Code %in% countries_of_interest)
 # Perform linear regression analysis
 linear_model <- lm(Schizo ~ Bipolar, data = filtered_data)
 summary(linear_model)
+linear_model_schizo <- lm(Schizo ~ Year, data = filtered_data)
+linear_model_bipolar <- lm(Bipolar ~ Year, data = filtered_data)
 
 # Time series scatter plot for Schizophrenia and Bipolar Disorder share over years for the USA
 time_series_plot_combined <- function(){
@@ -106,4 +108,13 @@ qqnorm(filtered_data$Bipolar, pch = 1, frame = FALSE,
        main = "Normal Q-Q Plot for Bipolar Disorder Prevalence (USA)")
 qqline(filtered_data$Bipolar, col = "steelblue", lwd = 2)
 
+# Diagnostics Panel that is required for the presentation
+par(mfrow = c(2, 2), oma = c(0, 0, 0, 0))
+# Cannot name these with "main=..." because it names all 4 the same thing
+plot(linear_model_schizo, main = "")
+title("\nDiagnostics panel for Schizofrenia Disorder Prevalence (USA)", outer = TRUE)
+# mtext("Diagnostics Panel for Presentation", outer = TRUE, cex = 1.5)
+plot(linear_model_bipolar)
+title("\nDiagnostics panel for Bipolar Disorder Prevalence (USA)", outer = TRUE)
+par(mfrow = c(1,1))
 
