@@ -92,10 +92,12 @@ hist(filtered_data$Bipolar, main = "Distribution of Bipolar Disorder Prevalence 
 par(mfrow = c(1, 1))
 
 # QQ Norm Plots
-qqnorm(filtered_data$Schizo, pch = 1, frame = FALSE)
+qqnorm(filtered_data$Schizo, pch = 1, frame = FALSE,
+       main = "Normal Q-Q Plot for Schizofrenia Disorder Prevalence (USA)")
 qqline(filtered_data$Schizo, col = "steelblue", lwd = 2)
 
-qqnorm(filtered_data$Bipolar, pch = 1, frame = FALSE)
+qqnorm(filtered_data$Bipolar, pch = 1, frame = FALSE,
+       main = "Normal Q-Q Plot for Bipolar Disorder Prevalence (USA)")
 qqline(filtered_data$Bipolar, col = "steelblue", lwd = 2)
 
 
