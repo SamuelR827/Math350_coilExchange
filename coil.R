@@ -10,11 +10,11 @@ countries_of_interest <- c("USA")  # "Australia", "Cameroon", "Cambodia"
 filtered_data <- subset(mental_health_data, Code %in% countries_of_interest)
 
 # Perform linear regression analysis
-regression_model <- lm(Schizo ~ Bipolar, data = filtered_data)
-summary(regression_model)
+linear_model <- lm(Schizo ~ Bipolar, data = filtered_data)
+summary(linear_model)
 
 # Time series scatter plot for Schizophrenia and Bipolar Disorder share over years for the USA
-timeSeriesPlotCombined <- function(){
+time_series_plot_combined <- function(){
 plot(filtered_data$Year, filtered_data$Schizo, type = "b",
      ylim = c(0.3, 0.7), xlab = "Year", ylab = "Share of Population",
      col = "blue", pch = 16,
@@ -30,7 +30,7 @@ mtext(paste("Correlation:", round(correlation$estimate, 2), "\n",
             "p-value:", signif(correlation$p.value, digits = 3)), 
       side = 1, line = 3, col = "darkgreen", adj = 0)
 }
-timeSeriesPlotCombined()
+time_series_plot_combined()
 
 # Loop through each country to perform correlation and regression analysis
 for (country in countries_of_interest) {
@@ -41,12 +41,12 @@ for (country in countries_of_interest) {
   correlation_test <- cor.test(country_data$Schizo, country_data$Bipolar, method = "pearson")
   
   # Perform linear regression analysis
-  regression_model_country <- lm(Schizo ~ Bipolar, data = country_data)
+  linear_model_country <- lm(Schizo ~ Bipolar, data = country_data)
   
   # Print results for each country
   cat("\nResults for", country, ":\n")
   print(correlation_test)
-  print(summary(regression_model_country))
+  print(summary(linear_model_country))
   
   # Create scatter plot with regression line for each country
   ggplot(country_data, aes(x = Bipolar, y = Schizo)) +
@@ -97,7 +97,7 @@ hist(filtered_data$Bipolar, main = "Distribution of Bipolar Disorder Prevalence 
      xlab = "Percentage", ylab = "Frequency", col = "lightcoral")
 par(mfrow = c(1, 1))
 
-# QQ Norm Plots
+# QQ Norm Plots - Included in next section
 qqnorm(filtered_data$Schizo, pch = 1, frame = FALSE,
        main = "Normal Q-Q Plot for Schizofrenia Disorder Prevalence (USA)")
 qqline(filtered_data$Schizo, col = "steelblue", lwd = 2)
