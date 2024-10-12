@@ -2,15 +2,11 @@
 library(readr)
 library(ggplot2)
 
-# Load the original dataset
-MENTAL <- read_csv("MentalIllness-MATH350.csv")
-#View(MENTAL)
-
 # Read the cleaned dataset for further analysis
-mental_health_data <- read.csv("mental-illnesses-prevalence-cleaned.csv")
+mental_health_data <- read.csv("mental-illnesses-prevalence-all.csv")
 
 # Define the countries of interest
-countries_of_interest <- c("USA", "Australia", "Cameroon", "Cambodia")
+countries_of_interest <- c("USA")  # "Australia", "Cameroon", "Cambodia"
 
 # Filter dataset for those countries
 filtered_data <- subset(mental_health_data, Code %in% countries_of_interest)
