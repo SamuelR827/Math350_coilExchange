@@ -75,6 +75,12 @@ ggplot(filtered_data, aes(x = Year, y = Bipolar, group = Code, color = Code)) +
        y = "Bipolar Disorder Share of Population") +
   theme_minimal()
 
+# Quartile table statistics
+summary(filtered_data$Schizo)
+sd(filtered_data$Schizo)
+summary(filtered_data$Bipolar)
+sd(filtered_data$Bipolar)
+
 # Box plots for Schizophrenia and Bipolar Disorder prevalence across countries
 par(mfrow = c(1, 2))
 boxplot(filtered_data$Schizo ~ filtered_data$Code, main = "Schizophrenia Prevalence (USA)",
