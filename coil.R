@@ -2,35 +2,19 @@
 library(readr)
 library(ggplot2)
 
-# Read the cleaned dataset for further analysis
+# Read the dataset for further analysis
 mental_health_data <- read.csv("mental-illnesses-prevalence-all.csv")
 
-# Define the countries of interest
+# Get only required countries
 countries_of_interest <- c("USA")  # "Australia", "Cameroon", "Cambodia"
-
-# Filter dataset for those countries
 filtered_data <- subset(mental_health_data, Code %in% countries_of_interest)
-
-# Perform a linear regression analysis for the USA
-Country <- 'USA'
-filtered_data <- subset(mental_health_data, Code == Country)
-
-# Check the structure of the data (optional)
-str(filtered_data)
 
 # Perform linear regression analysis
 regression_model <- lm(Schizo ~ Bipolar, data = filtered_data)
 summary(regression_model)
 
-# Optional: Visualize the regression for USA
-ggplot(filtered_data, aes(x = Bipolar, y = Schizo)) +
-  geom_point() +
-  geom_smooth(method = "lm", col = "blue") +
-  labs(title = "Regression Analysis: Schizophrenia vs. Bipolar Disorder (USA)",
-       x = "Bipolar Disorder Prevalence",
-       y = "Schizophrenia Prevalence")
-
 # Time series scatter plot for Schizophrenia and Bipolar Disorder share over years for the USA
+timeSeriesPlotCombined <- function(){
 plot(filtered_data$Year, filtered_data$Schizo, type = "b",
      ylim = c(0.3, 0.7), xlab = "Year", ylab = "Share of Population",
      col = "blue", pch = 16,
@@ -45,8 +29,8 @@ correlation <- cor.test(filtered_data$Schizo, filtered_data$Bipolar)
 mtext(paste("Correlation:", round(correlation$estimate, 2), "\n", 
             "p-value:", signif(correlation$p.value, digits = 3)), 
       side = 1, line = 3, col = "darkgreen", adj = 0)
-
-# --- NEW CODE FOR ADDITIONAL COUNTRIES ---
+}
+timeSeriesPlotCombined()
 
 # Loop through each country to perform correlation and regression analysis
 for (country in countries_of_interest) {
