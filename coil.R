@@ -101,7 +101,7 @@ par(mfrow = c(1, 1))
 
 # QQ Norm Plots - Included in next section
 qqnorm(filtered_data$Schizo, pch = 1, frame = FALSE,
-       main = "Normal Q-Q Plot for Schizofrenia Disorder Prevalence (USA)")
+       main = "Normal Q-Q Plot for Schizophrenia Disorder Prevalence (USA)")
 qqline(filtered_data$Schizo, col = "steelblue", lwd = 2)
 
 qqnorm(filtered_data$Bipolar, pch = 1, frame = FALSE,
@@ -112,7 +112,7 @@ qqline(filtered_data$Bipolar, col = "steelblue", lwd = 2)
 par(mfrow = c(2, 2), oma = c(0, 0, 0, 0))
 # Cannot name these with "main=..." because it names all 4 the same thing
 plot(linear_model_schizo, main = "")
-title("\nDiagnostics panel for Schizofrenia Disorder Prevalence (USA)", outer = TRUE)
+title("\nDiagnostics panel for Schizophrenia Disorder Prevalence (USA)", outer = TRUE)
 # mtext("Diagnostics Panel for Presentation", outer = TRUE, cex = 1.5)
 plot(linear_model_bipolar)
 title("\nDiagnostics panel for Bipolar Disorder Prevalence (USA)", outer = TRUE)
