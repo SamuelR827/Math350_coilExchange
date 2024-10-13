@@ -15,6 +15,17 @@ summary(linear_model)
 linear_model_schizo <- lm(Schizo ~ Year, data = filtered_data)
 linear_model_bipolar <- lm(Bipolar ~ Year, data = filtered_data)
 
+# Perform more complex regression
+filtered_data$Bipolar2 <- filtered_data$Bipolar^2
+filtered_data$Bipolar3 <- filtered_data$Bipolar^3
+filtered_data$Bipolar4 <- filtered_data$Bipolar^4
+quadradic_model <-lm(Schizo ~ Bipolar + Bipolar2, data = filtered_data)
+cubic_model <-lm(Schizo ~ Bipolar + Bipolar2 + Bipolar3, data = filtered_data)
+quartic_model <-lm(Schizo ~ Bipolar + Bipolar2 + Bipolar3 + Bipolar4, data = filtered_data)
+summary(quadradic_model)
+summary(cubic_model)
+summary(quartic_model)
+
 # Time series scatter plot for Schizophrenia and Bipolar Disorder share over years for the USA
 time_series_plot_combined <- function(){
 plot(filtered_data$Year, filtered_data$Schizo, type = "b",
@@ -40,7 +51,7 @@ for (country in countries_of_interest) {
   country_data <- subset(filtered_data, Code == country)
   
   # Perform Pearson correlation test
-  correlation_test <- cor.test(country_data$Schizo, country_data$Bipolar, method = "pearson")
+  correlation_test <- cor.test(country_data$Bipolar, country_data$Schizo, method = "pearson")
   
   # Perform linear regression analysis
   linear_model_country <- lm(Schizo ~ Bipolar, data = country_data)
@@ -59,6 +70,16 @@ for (country in countries_of_interest) {
          y = "Schizophrenia Prevalence") +
     theme_minimal()
 }
+
+cor.test(filtered_data$Bipolar, filtered_data$Schizo, method = "pearson")
+cor.test(filtered_data$Bipolar2, filtered_data$Schizo, method = "pearson")
+# Quadradic Regression Plot
+schizo_predict <- predict(quadradic_model,list(Bipolar=filtered_data$Bipolar, Bipolar2=filtered_data$Bipolar2))
+plot(filtered_data$Bipolar, filtered_data$Schizo,
+     main = "Quadradic Regression Visualized (USA)", 
+     xlab = "Bipolar Disorder Prevalence", ylab = "Schizophrenia Prevalence"
+     )
+lines(filtered_data$Bipolar, schizopredict , col='blue')
 
 # Time series analysis of Schizophrenia and Bipolar Disorder share over years for all countries
 ggplot(filtered_data, aes(x = Year, y = Schizo, group = Code, color = Code)) +
