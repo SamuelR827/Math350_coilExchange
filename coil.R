@@ -86,9 +86,9 @@ sd(filtered_data$Bipolar)
 # Box plots for Schizophrenia and Bipolar Disorder prevalence across countries
 par(mfrow = c(1, 2))
 boxplot(filtered_data$Schizo ~ filtered_data$Code, main = "Schizophrenia Prevalence (USA)",
-        ylab = "Prevalence", xlab = "Country")
+        xlab = "Prevalence", ylab = "USA", horizontal = TRUE)
 boxplot(filtered_data$Bipolar ~ filtered_data$Code, main = "Bipolar Disorder Prevalence (USA)",
-        ylab = "Prevalence", xlab = "Country")
+        xlab = "Prevalence", ylab = "USA", horizontal = TRUE)
 par(mfrow = c(1, 1))
 
 # Histograms for each disorder across countries
